@@ -15,6 +15,9 @@ intents.message_content = True
 # Bot setup
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+# Get channel name
+channelName = os.getenv('CHANNEL_NAME')
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
@@ -28,7 +31,7 @@ async def on_voice_state_update(member, before, after):
         # User joins a voice channel
         if before.channel is None and after.channel is not None:
             print(f'{member.name} has joined {after.channel.name}')
-            text_channel = discord.utils.get(member.guild.text_channels, name='bot-channel')
+            text_channel = discord.utils.get(member.guild.text_channels, name=channelName)
             if text_channel:
                 print(f'Sending join message to text channel: {text_channel.name}')
                 await text_channel.send(f'{member.display_name} has joined the voice channel {after.channel.name}')
@@ -36,7 +39,7 @@ async def on_voice_state_update(member, before, after):
         # User leaves a voice channel
         elif before.channel is not None and after.channel is None:
             print(f'{member.name} has left {before.channel.name}')
-            text_channel = discord.utils.get(member.guild.text_channels, name='bot-channel')
+            text_channel = discord.utils.get(member.guild.text_channels, name=channelName)
             if text_channel:
                 print(f'Sending leave message to text channel: {text_channel.name}')
                 await text_channel.send(f'{member.display_name} has left the voice channel {before.channel.name}')
@@ -44,7 +47,7 @@ async def on_voice_state_update(member, before, after):
         # User switches voice channels
         elif before.channel is not None and after.channel is not None and before.channel != after.channel:
             print(f'{member.name} has moved from {before.channel.name} to {after.channel.name}')
-            text_channel = discord.utils.get(member.guild.text_channels, name='bot-channel')
+            text_channel = discord.utils.get(member.guild.text_channels, name=channelName)
             if text_channel:
                 print(f'Sending move message to text channel: {text_channel.name}')
                 await text_channel.send(f'{member.display_name} has moved from {before.channel.name} to {after.channel.name}')

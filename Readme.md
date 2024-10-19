@@ -43,3 +43,9 @@ When you are done working, deactivate the virtual environment:
 ```
 deactivate
 ```
+
+To stop all running Python virtual environments (or any Python processes), 
+you can use the following command to terminate all Python processes:
+```
+pkill -f python
+```
